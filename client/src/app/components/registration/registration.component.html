@@ -1,8 +1,8 @@
-<mat-horizontal-stepper linear="true" #stepper [selectedIndex]="stepSelIndex">
+<mat-horizontal-stepper linear="true" #stepper [selectedIndex]="stepSelIndex" class="stepperContainer">
     <mat-step state="personalDetails">
-        <!-- Personal Details <Section></Section> -->
+        <!-- Personal Details Section -->
         <mat-card style="display: flex;width: 70%;">
-            <img src="/assets/img/personal.jpg" style="width:48%" alt="personalData"/>
+            <img src="/assets/img/personal.jpg" style="width:48%" alt="personalData" />
             <div class="formFields" style="margin-left: 4rem;">
                 <form>
                     <ng-template matStepLabel>Personal Details</ng-template>
@@ -115,25 +115,20 @@
                 <form>
                     <mat-form-field appearance="outline" style="width: 20rem;">
                         <mat-label>Job Title</mat-label>
-                        <input type="email" required width="20rem" matInput placeholder="Placeholder" name="jobTitle"
+                        <input required width="20rem" matInput placeholder="Placeholder" name="jobTitle"
                             [(ngModel)]="data.company.jobTitle">
                         <mat-icon matSuffix>edit</mat-icon>
                         <mat-error>Job Title is required.</mat-error>
                     </mat-form-field>
                 </form>
                 <form>
-                    <div>
-                        <mat-form-field appearance="outline" style="width: 20rem;">
-                            <mat-label>Choose a category</mat-label>
-                            <mat-select required [attr.disabled]="selCountry.length > 0 ? false : true" name="category"
-                                [(ngModel)]="data.company.category">
-                                <mat-option *ngFor="let state of selCountry.states" [value]="state">
-                                    {{state}}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error>Please select category.</mat-error>
-                        </mat-form-field>
-                    </div>
+                    <mat-form-field appearance="outline" style="width: 20rem;">
+                        <mat-label>Years of Experience</mat-label>
+                        <input type="text" required width="20rem" matInput placeholder="Placeholder" name="yearsOfExperience"
+                            [(ngModel)]="data.company.experience">
+                        <mat-icon matSuffix>school</mat-icon>
+                        <mat-error>Years of Experience is required.</mat-error>
+                    </mat-form-field>
                 </form>
                 <form>
                     <mat-checkbox style="line-height: 54px;" name="isAcceptedTerms"
@@ -142,26 +137,29 @@
                 <div>
                     <button mat-button mat-stroked-button style="width: 28%;" matStepperPrevious>Back</button>
                     <button style="width: 68%;margin-left: 2%;"
-                        [style.background]='!(data.company.name == "" || data.company.email == "" || data.company.category == "" || data.company.jobTitle == "" || data.company.orgLogo == "" || !data.company.isAcceptedTerms) ? "green" : "white"'
-                        [style.color]='!(data.company.name == "" || data.company.email == "" || data.company.category == "" || data.company.jobTitle == "" || data.company.orgLogo == "" || !data.company.isAcceptedTerms) ? "white" : "rgb(51, 51, 51)"'
+                        [style.background]='!(data.company.name == "" || data.company.email == "" || data.company.experience == "" || data.company.jobTitle == "" || data.company.orgLogo == "" || !data.company.isAcceptedTerms) ? "green" : "white"'
+                        [style.color]='!(data.company.name == "" || data.company.email == "" || data.company.experience == "" || data.company.jobTitle == "" || data.company.orgLogo == "" || !data.company.isAcceptedTerms) ? "white" : "rgb(51, 51, 51)"'
                         mat-stroked-button (click)="submitOriganisationDetails()">Send OTP</button>
                 </div>
             </div>
         </mat-card>
     </mat-step>
     <mat-step state="Verfication">
+        <!-- Verification Section -->
         <ng-template matStepLabel>Email Verfications</ng-template>
         <mat-card style="display: flex;width: 70%;">
             <img src="/assets/img/verification.jpg" style="width:48%" alt="verificationSection" />
             <div style="margin-left: 4rem;">
                 <form>
                     <ng-otp-input (onInputChange)="onOtpChange($event)" [config]="{length:4}"></ng-otp-input>
-                    <p>
-                        {{ genOTP.timerCount }}
+                    <p class="timerCount">
+                        <mat-icon *ngIf="genOTP.timerCount > 0" [matBadge]="genOTP.timerCount" matBadgeColor="warn">alarm_on</mat-icon>
+                        <mat-icon *ngIf="genOTP.timerCount <= 0" >alarm_off</mat-icon>
                     </p>
-                    <div style="">
+                    <div>
                         <button mat-button mat-stroked-button style="width: 28%;" matStepperPrevious>Back</button>
-                        <button style="width: 68%;margin-left: 2%;" mat-stroked-button>Submit</button>
+                        <button *ngIf="genOTP.timerCount <= 0" style="width: 68%;margin-left: 2%;" (click)="sendMail()" mat-button mat-stroked-button >Resennd</button>
+                        <button *ngIf="genOTP.timerCount > 0" style="width: 68%;margin-left: 2%;" mat-stroked-button (click)="verifyOPT()">Submit</button>
                     </div>
                 </form>
             </div>
