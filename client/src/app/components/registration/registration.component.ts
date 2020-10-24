@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as $ from 'jquery';
+import { DataService } from 'src/app/services/data.service';
+import { Router } from '@angular/router';
 
 let self;
 @Component({
@@ -19,7 +21,7 @@ export class RegistrationComponent implements OnInit {
   genOTP = {
     code: "",
     time: null,
-    timerCount: 30,
+    timerCount: 60,
     isTimerExpired: true,
     timerStart: function () {
       var _that = this;
@@ -30,7 +32,6 @@ export class RegistrationComponent implements OnInit {
           clearInterval(refreshIntervalId);
           self.genOTP.isTimerExpired = true;
         }
-        console.log(self.genOTP.timerCount)
       }, 1000);
     }
   }
@@ -47,7 +48,7 @@ export class RegistrationComponent implements OnInit {
       name: '',
       email: '',
       jobTitle: '',
-      category: '',
+      experience: '',
       isAcceptedTerms: false
     }
   }
@@ -56,7 +57,7 @@ export class RegistrationComponent implements OnInit {
     step2Success: false,
     step3Success: false
   };
-  constructor(private http: HttpClient, private snackBar: MatSnackBar) {
+  constructor(private http: HttpClient, private snackBar: MatSnackBar, private ds: DataService, private router: Router) {
     this.getStatesByCountries();
     self = this;
   }
@@ -85,6 +86,7 @@ export class RegistrationComponent implements OnInit {
   sendMail() {
     this.genOTP.code = this.generateOTP();
     this.genOTP.time = new Date();
+    this.genOTP.timerCount = 60;
     this.genOTP.timerStart();
     const params = {
       to: this.data.company.email,
@@ -154,8 +156,9 @@ export class RegistrationComponent implements OnInit {
   }
 
   submitOriganisationDetails() {
+    this.genOTP.timerCount = 60;
     var company = this.data.company;
-    if (company.name == "" || company.email == "" || company.category == "" || company.jobTitle == "" || company.orgLogo == "" || !company.isAcceptedTerms) {
+    if (company.name == "" || company.email == "" || company.experience == "" || company.jobTitle == "" || company.orgLogo == "" || !company.isAcceptedTerms) {
       this.showMessage("Please fill the required fields");
       this.stepSelIndex = 1;
     }
@@ -166,9 +169,18 @@ export class RegistrationComponent implements OnInit {
     console.log(this.data);
   }
 
-  onOtpChange(event) {
-    if (event.length == 4)
-      this.enteredOTP = event.length
+  onOtpChange(data) {
+    if (data.length == 4)
+      this.enteredOTP = data;
+  }
+
+  verifyOPT(){
+    if(this.enteredOTP.length < 4){
+      this.showMessage("Enter the valid OTP");
+    } else if(this.enteredOTP.toString() == this.genOTP.code.toString()) {
+      this.ds.obj.saveData("Organization", this.data);
+      this.router.navigateByUrl("/success");
+    }
   }
 
 }
