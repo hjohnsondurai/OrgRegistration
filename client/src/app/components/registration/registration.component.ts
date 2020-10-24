@@ -99,9 +99,13 @@ export class RegistrationComponent implements OnInit {
       crossDomain: true,
       data: params,
       success: function (data) {
+        const msg = (typeof data == "object") ? data?.SERVER_MESSAGE : "Unknown error..!"
+        self.showMessage(msg || "Unknown error..!");
         console.log(data);
       },
       error: function (err) {
+        const msg = (typeof err == "object") ? err?.SERVER_MESSAGE : "Unknown error..!"
+        self.showMessage(msg || "Unknown error..!");
         console.log(err);
       }
     });
