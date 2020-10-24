@@ -18,11 +18,14 @@ import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { NgOtpInputModule } from 'ng-otp-input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatBadgeModule } from '@angular/material/badge';
+import { SuccessComponent } from './components/success/success.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    SuccessComponent
   ],
   imports: [
     BrowserModule,
@@ -40,7 +43,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     FormsModule,
     MatCheckboxModule,
     NgOtpInputModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatBadgeModule
   ],
   providers: [DataService],
   bootstrap: [AppComponent]
