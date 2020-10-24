@@ -1,0 +1,12 @@
+{
+    "from": "DisplayName <someone@mail.com>",
+    "host": "localhost",
+    "secureConnection": true,
+    "port": 465,
+    "transportMethod": "SMTP",
+    "auth": {
+        "user": "someone@mail.com",
+        "pass": "password"
+    }
+
+}

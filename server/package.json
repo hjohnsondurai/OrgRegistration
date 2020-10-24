@@ -1,0 +1,17 @@
+{
+  "name": "mailer",
+  "version": "0.0.0",
+  "description": "Mailer",
+  "main": "app.js",
+  "author": {
+    "name": ""
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-handlebars": "^3.1.0",
+    "express-mailer": "^0.3.1",
+    "handlebars": "^4.7.6"
+  }
+}
