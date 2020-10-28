@@ -4,6 +4,10 @@
             margin: auto;
             margin-top: 2rem;
             width: 20rem;
+            
+            .mat-form-field-prefix{
+                top: 0px;
+            }
         }
         .timerCount{
             padding: 2rem;

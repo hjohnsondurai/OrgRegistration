@@ -1,66 +1,53 @@
 <mat-horizontal-stepper linear="true" #stepper [selectedIndex]="stepSelIndex" class="stepperContainer">
-    <mat-step state="personalDetails">
+    <mat-step state="personalDetails" [stepControl]="firstFormGroup" editable="true">
         <!-- Personal Details Section -->
         <mat-card>
             <div class="formFields">
-                <form>
+                <form [formGroup]="firstFormGroup">
                     <ng-template matStepLabel>Personal Details</ng-template>
                     <mat-form-field appearance="outline" style="width: 20rem;" (change)="stepper.step1Success = true">
                         <mat-label>Full Name</mat-label>
-                        <input width="20rem" matInput placeholder="Placeholder" name="name"
+                        <input width="20rem" formControlName="firstCtrl" matInput placeholder="Placeholder" name="name"
                             [(ngModel)]="data.personal.name" required>
                         <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
                         <mat-error>Name is required</mat-error>
                     </mat-form-field>
-                </form>
-                <form style="line-height: 54px;word-spacing: 36px;">
-                    <mat-label>Gender</mat-label>
-                    <mat-radio-group class="example-radio-group" name="gender" [(ngModel)]="data.personal.gender">
-                        <mat-radio-button *ngFor="let gender of ['Male','Female','Other']" [value]="gender">
-                            {{gender}}
-                        </mat-radio-button>
-                    </mat-radio-group>
-
-                </form>
-                <form>
-                    <div *ngIf="countriesList.length > 0">
-                        <mat-form-field appearance="outline" style="width: 20rem;">
-                            <mat-label>Country</mat-label>
-                            <mat-select #countrySelect name="country" [(ngModel)]="data.personal.country" required (selectionChange)="updateCountryCode()">
-                                <mat-option *ngFor="let country of countriesList" [value]="country">
-                                    {{country.country}}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error>Please select the Country.</mat-error>
-                        </mat-form-field>
+                    <div style="line-height: 54px;word-spacing: 36px;">
+                        <mat-label>Gender</mat-label>
+                        <mat-radio-group formControlName="secondtCtrl" class="example-radio-group" name="gender" [(ngModel)]="data.personal.gender">
+                            <mat-radio-button *ngFor="let gender of ['Male','Female','Other']" [value]="gender">
+                                {{gender}}
+                            </mat-radio-button>
+                        </mat-radio-group>
                     </div>
-                </form>
-                <form>
-                    <div>
-                        <mat-form-field appearance="outline" style="width: 20rem;">
-                            <mat-label>State</mat-label>
-                            <mat-select [attr.disabled]="data.personal.country.length > 0 ? false : true" name="state"
-                                [(ngModel)]="data.personal.state" required>
-                                <mat-option *ngFor="let state of data.personal.country.states" [value]="state">
-                                    {{state}}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error>Please select the State.</mat-error>
-                        </mat-form-field>
-                    </div>
-                </form>
-                <form>
-                    <div>
-                        <mat-form-field appearance="outline" style="width: 20rem;"
+                    <mat-form-field  *ngIf="countriesList.length > 0" appearance="outline" style="width: 20rem;">
+                        <mat-label>Country</mat-label>
+                        <mat-select formControlName="thirdCtrl" #countrySelect name="country" [(ngModel)]="data.personal.country" required (selectionChange)="updateCountryCode()">
+                            <mat-option *ngFor="let country of countriesList" [value]="country">
+                                {{country.country}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>Please select the Country.</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" style="width: 20rem;">
+                        <mat-label>State</mat-label>
+                        <mat-select formControlName="fourthCtrl" [attr.disabled]="data.personal.country.length > 0 ? false : true" name="state"
+                            [(ngModel)]="data.personal.state" required>
+                            <mat-option *ngFor="let state of data.personal.country.states" [value]="state">
+                                {{state}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>Please select the State.</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" style="width: 20rem;"
                             (change)="stepper.step1Success = false">
                             <mat-label>Phone</mat-label>
                             <span matPrefix>{{data.personal.countryCode}} &nbsp;</span>
-                            <input maxlength="10" type="tel" matInput placeholder="555-555-1234" name="phone"
+                            <input formControlName="fifthCtrl" maxlength="10" type="tel" matInput placeholder="555-555-1234" name="phone"
                                 [(ngModel)]="data.personal.phone" required>
                             <mat-icon matSuffix>phone</mat-icon>
                             <mat-error>Please enter phone number.</mat-error>
                         </mat-form-field>
-                    </div>
                 </form>
                 <div>
                     <button style="width: 100%;"
@@ -71,36 +58,32 @@
             </div>
         </mat-card>
     </mat-step>
-    <mat-step state="organisationDetails">
+    <mat-step state="organisationDetails" [stepControl]="secondFormGroup" editable="true">
         <!-- organisation Details Section -->
         <mat-card>
             <div class="formFields">
-                <form>
-                    <span>
+                <form [formGroup]="secondFormGroup">
+                    <div>
                         <mat-icon [style.color]="org_icon_upload.   value != '' ? '#e25400' : '#999'"
                             (click)="org_icon_upload.click()"
                             style="cursor:pointer;font-size: 2.2em;color: #e0e0e0; padding: 5px;border-radius: 20px;">
                             add_photo_alternate</mat-icon>
-                        <input style="display:none" type="file" (change)="uploadOrgLogo($event, org_icon_upload.value);"
+                        <input formControlName="firstCtrl" style="display:none" type="file" (change)="uploadOrgLogo($event, org_icon_upload.value);"
                             #org_icon_upload accept="image/*" />
-                    </span>
-                    <mat-label *ngIf="org_icon_upload.value != ''"
+                        <mat-label *ngIf="org_icon_upload.value != ''"
                         style="padding: 18px;position: absolute;font-size: 0.9em;">File Selected...</mat-label>
-                </form>
-                <form>
+                    </div>
                     <ng-template matStepLabel>Organisation Details</ng-template>
                     <mat-form-field appearance="outline" style="width: 20rem;" (change)="stepper.step2Success = true">
                         <mat-label>Company Name</mat-label>
-                        <input width="20rem" required matInput placeholder="Placeholder" name="name"
+                        <input formControlName="secondtCtrl" width="20rem" required matInput placeholder="Placeholder" name="name"
                             [(ngModel)]="data.company.name">
                         <mat-icon matSuffix>work</mat-icon>
                         <mat-error>Company name is required.</mat-error>
                     </mat-form-field>
-                </form>
-                <form>
                     <mat-form-field appearance="outline" style="width: 20rem;">
                         <mat-label>Email</mat-label>
-                        <input type="email" required
+                        <input formControlName="thirdCtrl" type="email" required
                             pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$" width="20rem" matInput
                             placeholder="Placeholder" name="email" [(ngModel)]="data.company.email">
                         <mat-icon matSuffix>local_post_office</mat-icon>
@@ -108,28 +91,24 @@
                             Please check you have entered a valid email address
                         </mat-error>
                     </mat-form-field>
-                </form>
-                <form>
                     <mat-form-field appearance="outline" style="width: 20rem;">
                         <mat-label>Job Title</mat-label>
-                        <input required width="20rem" matInput placeholder="Placeholder" name="jobTitle"
+                        <input formControlName="fourthCtrl" required width="20rem" matInput placeholder="Placeholder" name="jobTitle"
                             [(ngModel)]="data.company.jobTitle">
                         <mat-icon matSuffix>edit</mat-icon>
                         <mat-error>Job Title is required.</mat-error>
                     </mat-form-field>
-                </form>
-                <form>
                     <mat-form-field appearance="outline" style="width: 20rem;">
                         <mat-label>Years of Experience</mat-label>
-                        <input type="text" required width="20rem" matInput placeholder="Placeholder" name="yearsOfExperience"
+                        <input formControlName="fifthCtrl" type="text" required width="20rem" matInput placeholder="Placeholder" name="yearsOfExperience"
                             [(ngModel)]="data.company.experience">
                         <mat-icon matSuffix>school</mat-icon>
                         <mat-error>Years of Experience is required.</mat-error>
                     </mat-form-field>
-                </form>
-                <form>
-                    <mat-checkbox style="line-height: 54px;" name="isAcceptedTerms"
+                    <div>
+                        <mat-checkbox formControlName="sixthCtrl" style="line-height: 54px;" name="isAcceptedTerms"
                         [(ngModel)]="data.company.isAcceptedTerms"> I Accept the Terms and Conditions</mat-checkbox>
+                    </div>        
                 </form>
                 <div>
                     <button mat-button mat-stroked-button style="width: 28%;" matStepperPrevious>Back</button>

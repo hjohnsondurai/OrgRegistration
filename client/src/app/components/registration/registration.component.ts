@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import * as $ from 'jquery';
 import { DataService } from 'src/app/services/data.service';
 import { Router } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 let self;
 @Component({
@@ -13,6 +14,9 @@ let self;
   styleUrls: ['./registration.component.scss']
 })
 export class RegistrationComponent implements OnInit {
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
+
   countriesList = [];
   countryCodesByName = {};
   countriesByName = {};
@@ -61,13 +65,28 @@ export class RegistrationComponent implements OnInit {
     step3Success: false
   };
 
-  constructor(private http: HttpClient, private snackBar: MatSnackBar, private ds: DataService, private router: Router) {
+  constructor(private http: HttpClient, private snackBar: MatSnackBar, private ds: DataService, private router: Router, private _formBuilder: FormBuilder) {
     self = this;
     this.getStatesByCountries();
     this.getCountryCodes();
   }
 
   ngOnInit(): void {
+    this.firstFormGroup = this._formBuilder.group({
+      firstCtrl: ['', Validators.required],
+      secondtCtrl: ['', Validators.required],
+      thirdCtrl: ['', Validators.required],
+      fourthCtrl: ['', Validators.required],
+      fifthCtrl: ['', Validators.required]
+    });
+    this.secondFormGroup = this._formBuilder.group({
+      firstCtrl: ['', Validators.required],
+      secondtCtrl: ['', Validators.required],
+      thirdCtrl: ['', Validators.required],
+      fourthCtrl: ['', Validators.required],
+      fifthCtrl: ['', Validators.required],
+      sixthCtrl: ['', Validators.required]
+    });
   }
 
   getStatesByCountries() {

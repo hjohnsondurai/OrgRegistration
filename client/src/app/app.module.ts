@@ -14,7 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSelectModule } from '@angular/material/select';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { NgOtpInputModule } from 'ng-otp-input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -44,7 +44,8 @@ import { SuccessComponent } from './components/success/success.component';
     MatCheckboxModule,
     NgOtpInputModule,
     MatSnackBarModule,
-    MatBadgeModule
+    MatBadgeModule,
+    ReactiveFormsModule
   ],
   providers: [DataService],
   bootstrap: [AppComponent]
