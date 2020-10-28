@@ -15,13 +15,20 @@ let self;
   styleUrls: ['./registration.component.scss']
 })
 export class RegistrationComponent implements OnInit {
+  //#region Globale variables
+  // Stepper control object
+  @ViewChild("stepper") stepCtrl: MatStepper;
+  // Form controls
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
-  @ViewChild("stepper") stepCtrl: MatStepper;
+  
+  // Other required variables
   countriesList = [];
   countryCodesByName = {};
   countriesByName = {};
   enteredOTP = "";
+
+  // OTP processing object
   genOTP = {
     code: "",
     time: null,
@@ -42,11 +49,12 @@ export class RegistrationComponent implements OnInit {
     }
   }
 
+  // User form data object for bindings
   data = {
     personal: {
       name: "",
       gender: '',
-      country: {country: "India"},
+      country: { country: "India" },
       state: '',
       countryCode: "+91",
       phone: ''
@@ -61,11 +69,13 @@ export class RegistrationComponent implements OnInit {
     }
   }
 
+  // Stepper success notifier
   stepper = {
     step1Success: false,
     step2Success: false,
     step3Success: false
   };
+  //#endregion
 
   constructor(private http: HttpClient, private snackBar: MatSnackBar, private ds: DataService, private router: Router, private _formBuilder: FormBuilder) {
     self = this;
@@ -74,6 +84,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Initialize form control group for stepper control
     this.firstFormGroup = this._formBuilder.group({
       firstCtrl: ['', Validators.required],
       secondtCtrl: ['', Validators.required],
@@ -81,6 +92,7 @@ export class RegistrationComponent implements OnInit {
       fourthCtrl: ['', Validators.required],
       fifthCtrl: ['', Validators.required]
     });
+
     this.secondFormGroup = this._formBuilder.group({
       firstCtrl: ['', Validators.required],
       secondtCtrl: ['', Validators.required],
@@ -91,10 +103,12 @@ export class RegistrationComponent implements OnInit {
     });
   }
 
+  //#region Request handlers
+  // Request to get list of states and contry code from local JSON file
   getStatesByCountries() {
     this.http.get("assets/data/statesByCountries.json").subscribe((data) => {
       this.countriesList = data["countries"];
-      for(let i in this.countriesList){
+      for (let i in this.countriesList) {
         let country = this.countriesList[i];
         this.countriesByName[country.country] = country;
       }
@@ -106,16 +120,16 @@ export class RegistrationComponent implements OnInit {
   getCountryCodes() {
     this.http.get("assets/data/countryCodes.json").subscribe((data) => {
       let codes = (typeof data == "string") ? JSON.parse(data) : data;
-      for(let i in codes){
+      for (let i in codes) {
         let code = codes[i];
-        if(code.name.split(",").length > 0){
+        if (code.name.split(",").length > 0) {
           let names = code.name.split(",");
-          for(let i in names){
+          for (let i in names) {
             let name = names[i];
             this.countryCodesByName[name] = code.dial_code;
           }
         }
-        else{
+        else {
           this.countryCodesByName[code.name] = code.dial_code;
         }
       }
@@ -126,17 +140,7 @@ export class RegistrationComponent implements OnInit {
     });
   }
 
-  generateOTP() {
-    var digits = '0123456789';
-    var otpLength = 4;
-    var otp = '';
-    for (let i = 1; i <= otpLength; i++) {
-      var index = Math.floor(Math.random() * (digits.length));
-      otp = otp + digits[index];
-    }
-    return otp;
-  }
-
+  // Send otp email
   sendMail() {
     this.genOTP.code = this.generateOTP();
     this.genOTP.time = new Date();
@@ -166,6 +170,19 @@ export class RegistrationComponent implements OnInit {
       }
     });
   }
+  //#endregion 
+
+  //#region Local utils functions
+  generateOTP() {
+    var digits = '0123456789';
+    var otpLength = 4;
+    var otp = '';
+    for (let i = 1; i <= otpLength; i++) {
+      var index = Math.floor(Math.random() * (digits.length));
+      otp = otp + digits[index];
+    }
+    return otp;
+  }
 
   showMessage(message) {
     this.snackBar.open(message, "Hide", {
@@ -173,32 +190,16 @@ export class RegistrationComponent implements OnInit {
     });
   }
 
-  uploadOrgLogo(event) {
-    var file = event.target.files[0],
-      imageType = /image.*/;
-
-    if (!file.type.match(imageType))
-      alert("Selected file is not a image type. Please select a image file");
-
-    var reader = new FileReader();
-    reader.onload = fileOnload;
-    reader.readAsDataURL(file);
-
-    // Event handler
-    function fileOnload(e) {
-      let dataURL = e.target.result;
-      self.data.company.orgLogo = dataURL;
-    }
-  }
-
-  updateCountryCode(){
+  updateCountryCode() {
     let code = this.countryCodesByName[this.data.personal.country?.country] || "";
     this.data.personal.countryCode = code;
   }
-
+  //#endregion
+  
+  //#region form submit handlers
   submitPersonalDetails() {
     var personal = this.data.personal;
-    if (!this.isValidPersonaldetails()){
+    if (!this.isValidPersonaldetails()) {
       this.showMessage("Please fill the required fields");
     }
     else {
@@ -220,27 +221,50 @@ export class RegistrationComponent implements OnInit {
     console.log(this.data);
   }
 
+  verifyOPT() {
+    if (this.enteredOTP.toString() == this.genOTP.code.toString()) {
+      this.ds.obj.saveData("Organization", this.data);
+      this.router.navigateByUrl("/success");
+    }
+    else {
+      this.showMessage("Enter the valid OTP");
+    }
+  }
+  //#endregion
+
+  //#region control event handlers
+  uploadOrgLogo(event) {
+    var file = event.target.files[0],
+      imageType = /image.*/;
+
+    if (!file.type.match(imageType))
+      alert("Selected file is not a image type. Please select a image file");
+
+    var reader = new FileReader();
+    reader.onload = fileOnload;
+    reader.readAsDataURL(file);
+
+    // Event handler
+    function fileOnload(e) {
+      let dataURL = e.target.result;
+      self.data.company.orgLogo = dataURL;
+    }
+  }
+
   onOtpChange(data) {
     if (data.length == 4)
       this.enteredOTP = data;
   }
-
-  verifyOPT(){
-    if(this.enteredOTP.toString() == this.genOTP.code.toString()) {
-      this.ds.obj.saveData("Organization", this.data);
-      this.router.navigateByUrl("/success");
-    }
-    else{
-      this.showMessage("Enter the valid OTP");
-    }
-  }
-
-  isValidPersonaldetails():boolean{
+  //#endregion
+  
+  //#region form validation methods
+  isValidPersonaldetails(): boolean {
     return (this.data.personal.name != '' && this.data.personal.gender != '' && this.data.personal.country != null && this.data.personal.state != '' && this.data.personal.phone != '' && this.data.personal.phone.length == 10);
   }
 
-  isValidCompanyDetails():boolean{
+  isValidCompanyDetails(): boolean {
     return (this.data.company.name != "" && this.data.company.email != "" && this.data.company.experience != "" && this.data.company.jobTitle != "" && this.data.company.orgLogo != "" && this.data.company.isAcceptedTerms);
   }
+  //#endregion
 
 }

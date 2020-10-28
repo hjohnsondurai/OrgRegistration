@@ -14,15 +14,17 @@
                     </mat-form-field>
                     <div style="line-height: 54px;word-spacing: 36px;">
                         <mat-label>Gender</mat-label>
-                        <mat-radio-group formControlName="secondtCtrl" class="example-radio-group" name="gender" [(ngModel)]="data.personal.gender">
+                        <mat-radio-group formControlName="secondtCtrl" class="example-radio-group" name="gender"
+                            [(ngModel)]="data.personal.gender">
                             <mat-radio-button *ngFor="let gender of ['Male','Female','Other']" [value]="gender">
                                 {{gender}}
                             </mat-radio-button>
                         </mat-radio-group>
                     </div>
-                    <mat-form-field  *ngIf="countriesList.length > 0" appearance="outline" style="width: 20rem;">
+                    <mat-form-field *ngIf="countriesList.length > 0" appearance="outline" style="width: 20rem;">
                         <mat-label>Country</mat-label>
-                        <mat-select formControlName="thirdCtrl" #countrySelect name="country" [(ngModel)]="data.personal.country" required (selectionChange)="updateCountryCode()">
+                        <mat-select formControlName="thirdCtrl" #countrySelect name="country"
+                            [(ngModel)]="data.personal.country" required (selectionChange)="updateCountryCode()">
                             <mat-option *ngFor="let country of countriesList" [value]="country">
                                 {{country.country}}
                             </mat-option>
@@ -31,7 +33,8 @@
                     </mat-form-field>
                     <mat-form-field appearance="outline" style="width: 20rem;">
                         <mat-label>State</mat-label>
-                        <mat-select formControlName="fourthCtrl" [attr.disabled]="data.personal.country.length > 0 ? false : true" name="state"
+                        <mat-select formControlName="fourthCtrl"
+                            [attr.disabled]="data.personal.country.length > 0 ? false : true" name="state"
                             [(ngModel)]="data.personal.state" required>
                             <mat-option *ngFor="let state of data.personal.country.states" [value]="state">
                                 {{state}}
@@ -39,21 +42,19 @@
                         </mat-select>
                         <mat-error>Please select the State.</mat-error>
                     </mat-form-field>
-                    <mat-form-field appearance="outline" style="width: 20rem;"
-                            (change)="stepper.step1Success = false">
-                            <mat-label>Phone</mat-label>
-                            <span matPrefix>{{data.personal.countryCode}} &nbsp;</span>
-                            <input formControlName="fifthCtrl" maxlength="10" type="tel" matInput placeholder="555-555-1234" name="phone"
-                                [(ngModel)]="data.personal.phone" required>
-                            <mat-icon matSuffix>phone</mat-icon>
-                            <mat-error>Please enter phone number.</mat-error>
-                        </mat-form-field>
+                    <mat-form-field appearance="outline" style="width: 20rem;" (change)="stepper.step1Success = false">
+                        <mat-label>Phone</mat-label>
+                        <span matPrefix>{{data.personal.countryCode}} &nbsp;</span>
+                        <input formControlName="fifthCtrl" maxlength="10" type="tel" matInput placeholder="555-555-1234"
+                            name="phone" [(ngModel)]="data.personal.phone" required>
+                        <mat-icon matSuffix>phone</mat-icon>
+                        <mat-error>Please enter phone number.</mat-error>
+                    </mat-form-field>
                 </form>
                 <div>
-                    <button style="width: 100%;"
-                        [style.background]=" isValidPersonaldetails() ? '#e25400' : 'white'"
-                        [style.color]="isValidPersonaldetails() ? 'white' : 'rgb(51, 51, 51)'"
-                        mat-stroked-button (click)="submitPersonalDetails()">Next</button>
+                    <button style="width: 100%;" [style.background]=" isValidPersonaldetails() ? '#e25400' : 'white'"
+                        [style.color]="isValidPersonaldetails() ? 'white' : 'rgb(51, 51, 51)'" mat-stroked-button
+                        (click)="submitPersonalDetails()">Next</button>
                 </div>
             </div>
         </mat-card>
@@ -68,15 +69,16 @@
                             (click)="org_icon_upload.click()"
                             style="cursor:pointer;font-size: 2.2em;color: #e0e0e0; padding: 5px;border-radius: 20px;">
                             add_photo_alternate</mat-icon>
-                        <input formControlName="firstCtrl" style="display:none" type="file" (change)="uploadOrgLogo($event, org_icon_upload.value);"
-                            #org_icon_upload accept="image/*" />
+                        <input formControlName="firstCtrl" style="display:none" type="file"
+                            (change)="uploadOrgLogo($event, org_icon_upload.value);" #org_icon_upload
+                            accept="image/*" />
                         <img class="logoThumb" *ngIf="org_icon_upload.value != ''" [src]="data.company.orgLogo" />
                     </div>
                     <ng-template matStepLabel>Organisation Details</ng-template>
                     <mat-form-field appearance="outline" style="width: 20rem;" (change)="stepper.step2Success = true">
                         <mat-label>Company Name</mat-label>
-                        <input formControlName="secondtCtrl" width="20rem" required matInput placeholder="Placeholder" name="name"
-                            [(ngModel)]="data.company.name">
+                        <input formControlName="secondtCtrl" width="20rem" required matInput placeholder="Placeholder"
+                            name="name" [(ngModel)]="data.company.name">
                         <mat-icon matSuffix>work</mat-icon>
                         <mat-error>Company name is required.</mat-error>
                     </mat-form-field>
@@ -92,29 +94,29 @@
                     </mat-form-field>
                     <mat-form-field appearance="outline" style="width: 20rem;">
                         <mat-label>Job Title</mat-label>
-                        <input formControlName="fourthCtrl" required width="20rem" matInput placeholder="Placeholder" name="jobTitle"
-                            [(ngModel)]="data.company.jobTitle">
+                        <input formControlName="fourthCtrl" required width="20rem" matInput placeholder="Placeholder"
+                            name="jobTitle" [(ngModel)]="data.company.jobTitle">
                         <mat-icon matSuffix>edit</mat-icon>
                         <mat-error>Job Title is required.</mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline" style="width: 20rem;">
                         <mat-label>Years of Experience</mat-label>
-                        <input formControlName="fifthCtrl" type="text" required width="20rem" matInput placeholder="Placeholder" name="yearsOfExperience"
-                            [(ngModel)]="data.company.experience">
+                        <input formControlName="fifthCtrl" type="text" required width="20rem" matInput
+                            placeholder="Placeholder" name="yearsOfExperience" [(ngModel)]="data.company.experience">
                         <mat-icon matSuffix>school</mat-icon>
                         <mat-error>Years of Experience is required.</mat-error>
                     </mat-form-field>
                     <div>
                         <mat-checkbox formControlName="sixthCtrl" style="line-height: 54px;" name="isAcceptedTerms"
-                        [(ngModel)]="data.company.isAcceptedTerms"> I Accept the Terms and Conditions</mat-checkbox>
-                    </div>        
+                            [(ngModel)]="data.company.isAcceptedTerms"> I Accept the Terms and Conditions</mat-checkbox>
+                    </div>
                 </form>
                 <div>
                     <button mat-button mat-stroked-button style="width: 28%;" matStepperPrevious>Back</button>
                     <button style="width: 68%;margin-left: 2%;"
                         [style.background]='isValidCompanyDetails() ? "#e25400" : "white"'
-                        [style.color]='isValidCompanyDetails() ? "white" : "rgb(51, 51, 51)"'
-                        mat-stroked-button (click)="submitOriganisationDetails()">Send OTP</button>
+                        [style.color]='isValidCompanyDetails() ? "white" : "rgb(51, 51, 51)"' mat-stroked-button
+                        (click)="submitOriganisationDetails()">Send OTP</button>
                 </div>
             </div>
         </mat-card>
@@ -127,13 +129,17 @@
                 <form>
                     <ng-otp-input (onInputChange)="onOtpChange($event)" [config]="{length:4}"></ng-otp-input>
                     <p class="timerCount">
-                        <mat-icon *ngIf="genOTP.timerCount > 0" [matBadge]="genOTP.timerCount" matBadgeColor="warn">alarm_on</mat-icon>
-                        <mat-icon *ngIf="genOTP.timerCount <= 0" >alarm_off</mat-icon>
+                        <mat-icon *ngIf="genOTP.timerCount > 0" [matBadge]="genOTP.timerCount" matBadgeColor="warn">
+                            alarm_on</mat-icon>
+                        <mat-icon *ngIf="genOTP.timerCount <= 0">alarm_off</mat-icon>
                     </p>
                     <div>
                         <button mat-button mat-stroked-button style="width: 28%;" matStepperPrevious>Back</button>
-                        <button *ngIf="genOTP.timerCount <= 0" style="width: 68%;margin-left: 2%;" (click)="sendMail()" mat-button mat-stroked-button >Resennd</button>
-                        <button *ngIf="genOTP.timerCount > 0" style="width: 68%;margin-left: 2%;color:white;background-color:#e25400" mat-stroked-button (click)="verifyOPT()">Submit</button>
+                        <button *ngIf="genOTP.timerCount <= 0" style="width: 68%;margin-left: 2%;" (click)="sendMail()"
+                            mat-button mat-stroked-button>Resennd</button>
+                        <button *ngIf="genOTP.timerCount > 0"
+                            style="width: 68%;margin-left: 2%;color:white;background-color:#e25400" mat-stroked-button
+                            (click)="verifyOPT()">Submit</button>
                     </div>
                 </form>
             </div>
