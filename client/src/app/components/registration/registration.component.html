@@ -1,4 +1,4 @@
-<mat-horizontal-stepper linear="true" #stepper [selectedIndex]="stepSelIndex" class="stepperContainer">
+<mat-horizontal-stepper linear="true" #stepper class="stepperContainer">
     <mat-step state="personalDetails" [stepControl]="firstFormGroup" editable="true">
         <!-- Personal Details Section -->
         <mat-card>
@@ -34,7 +34,6 @@
                     <mat-form-field appearance="outline" style="width: 20rem;">
                         <mat-label>State</mat-label>
                         <mat-select formControlName="fourthCtrl"
-                            [attr.disabled]="data.personal.country.length > 0 ? false : true" name="state"
                             [(ngModel)]="data.personal.state" required>
                             <mat-option *ngFor="let state of data.personal.country.states" [value]="state">
                                 {{state}}
@@ -65,14 +64,14 @@
             <div class="formFields">
                 <form [formGroup]="secondFormGroup">
                     <div>
-                        <mat-icon [style.color]="org_icon_upload.   value != '' ? '#e25400' : '#999'"
-                            (click)="org_icon_upload.click()"
+                        <mat-icon [style.color]="orgLogoInput.value != '' ? '#e25400' : '#999'"
+                            (click)="orgLogoInput.click()"
                             style="cursor:pointer;font-size: 2.2em;color: #e0e0e0; padding: 5px;border-radius: 20px;">
                             add_photo_alternate</mat-icon>
                         <input formControlName="firstCtrl" style="display:none" type="file"
-                            (change)="uploadOrgLogo($event, org_icon_upload.value);" #org_icon_upload
+                            (change)="uploadOrgLogo($event);" #orgLogoInput
                             accept="image/*" />
-                        <img class="logoThumb" *ngIf="org_icon_upload.value != ''" [src]="data.company.orgLogo" />
+                        <img class="logoThumb" *ngIf="orgLogoInput.value != ''" [src]="data.company.orgLogo" />
                     </div>
                     <ng-template matStepLabel>Organisation Details</ng-template>
                     <mat-form-field appearance="outline" style="width: 20rem;" (change)="stepper.step2Success = true">

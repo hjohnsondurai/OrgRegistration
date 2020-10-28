@@ -54,7 +54,7 @@ export class RegistrationComponent implements OnInit {
     personal: {
       name: "",
       gender: '',
-      country: { country: "India" },
+      country: { country: "India", states: [] },
       state: '',
       countryCode: "+91",
       phone: ''
