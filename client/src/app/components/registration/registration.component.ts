@@ -226,11 +226,12 @@ export class RegistrationComponent implements OnInit {
   }
 
   verifyOPT(){
-    if(this.enteredOTP.length < 4){
-      this.showMessage("Enter the valid OTP");
-    } else if(this.enteredOTP.toString() == this.genOTP.code.toString()) {
+    if(this.enteredOTP.toString() == this.genOTP.code.toString()) {
       this.ds.obj.saveData("Organization", this.data);
       this.router.navigateByUrl("/success");
+    }
+    else{
+      this.showMessage("Enter the valid OTP");
     }
   }
 
