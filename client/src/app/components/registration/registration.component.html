@@ -53,7 +53,7 @@
                     <button style="width: 100%;"
                         [style.background]=" isValidPersonaldetails() ? '#e25400' : 'white'"
                         [style.color]="isValidPersonaldetails() ? 'white' : 'rgb(51, 51, 51)'"
-                        mat-stroked-button (click)="submitPersonalDetails();">Next</button>
+                        mat-stroked-button (click)="submitPersonalDetails()">Next</button>
                 </div>
             </div>
         </mat-card>
@@ -70,8 +70,7 @@
                             add_photo_alternate</mat-icon>
                         <input formControlName="firstCtrl" style="display:none" type="file" (change)="uploadOrgLogo($event, org_icon_upload.value);"
                             #org_icon_upload accept="image/*" />
-                        <mat-label *ngIf="org_icon_upload.value != ''"
-                        style="padding: 18px;position: absolute;font-size: 0.9em;">File Selected...</mat-label>
+                        <img class="logoThumb" *ngIf="org_icon_upload.value != ''" [src]="data.company.orgLogo" />
                     </div>
                     <ng-template matStepLabel>Organisation Details</ng-template>
                     <mat-form-field appearance="outline" style="width: 20rem;" (change)="stepper.step2Success = true">
@@ -134,7 +133,7 @@
                     <div>
                         <button mat-button mat-stroked-button style="width: 28%;" matStepperPrevious>Back</button>
                         <button *ngIf="genOTP.timerCount <= 0" style="width: 68%;margin-left: 2%;" (click)="sendMail()" mat-button mat-stroked-button >Resennd</button>
-                        <button *ngIf="genOTP.timerCount > 0" style="width: 68%;margin-left: 2%;" mat-stroked-button (click)="verifyOPT()">Submit</button>
+                        <button *ngIf="genOTP.timerCount > 0" style="width: 68%;margin-left: 2%;color:white;background-color:#e25400" mat-stroked-button (click)="verifyOPT()">Submit</button>
                     </div>
                 </form>
             </div>

@@ -1,11 +1,12 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as $ from 'jquery';
 import { DataService } from 'src/app/services/data.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatStepper } from '@angular/material/stepper';
 
 let self;
 @Component({
@@ -16,24 +17,25 @@ let self;
 export class RegistrationComponent implements OnInit {
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
-
+  @ViewChild("stepper") stepCtrl: MatStepper;
   countriesList = [];
   countryCodesByName = {};
   countriesByName = {};
-  stepSelIndex = 0;
   enteredOTP = "";
   genOTP = {
     code: "",
     time: null,
     timerCount: 60,
     isTimerExpired: true,
+    refreshIntervalId: null,
     timerStart: function () {
       var _that = this;
       self.genOTP.isTimerExpired = false;
-      var refreshIntervalId = setInterval(function () {
+      clearInterval(_that.refreshIntervalId);
+      _that.refreshIntervalId = setInterval(function () {
         self.genOTP.timerCount -= 1;
         if (_that.timerCount <= 0) {
-          clearInterval(refreshIntervalId);
+          clearInterval(_that.refreshIntervalId);
           self.genOTP.isTimerExpired = true;
         }
       }, 1000);
@@ -198,10 +200,9 @@ export class RegistrationComponent implements OnInit {
     var personal = this.data.personal;
     if (!this.isValidPersonaldetails()){
       this.showMessage("Please fill the required fields");
-      this.stepSelIndex = 0;
     }
     else {
-      this.stepSelIndex = 1;
+      this.stepCtrl.next();
     }
 
   }
@@ -211,11 +212,10 @@ export class RegistrationComponent implements OnInit {
     var company = this.data.company;
     if (!this.isValidCompanyDetails()) {
       this.showMessage("Please fill the required fields");
-      this.stepSelIndex = 1;
     }
     else {
       this.sendMail();
-      this.stepSelIndex = 2;
+      this.stepCtrl.next();
     }
     console.log(this.data);
   }
