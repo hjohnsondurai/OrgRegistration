@@ -1,9 +1,8 @@
 <mat-horizontal-stepper linear="true" #stepper [selectedIndex]="stepSelIndex" class="stepperContainer">
     <mat-step state="personalDetails">
         <!-- Personal Details Section -->
-        <mat-card style="display: flex;width: 70%;">
-            <img src="/assets/img/personal.jpg" style="width:48%" alt="personalData" />
-            <div class="formFields" style="margin-left: 4rem;">
+        <mat-card>
+            <div class="formFields">
                 <form>
                     <ng-template matStepLabel>Personal Details</ng-template>
                     <mat-form-field appearance="outline" style="width: 20rem;" (change)="stepper.step1Success = true">
@@ -66,7 +65,7 @@
                 </form>
                 <div>
                     <button style="width: 100%;"
-                        [style.background]="(data.personal.name != '' && data.personal.gender != '' && data.personal.country != '' && data.personal.state != '' && data.personal.phone != '') ? 'green' : 'white'"
+                        [style.background]="(data.personal.name != '' && data.personal.gender != '' && data.personal.country != '' && data.personal.state != '' && data.personal.phone != '') ? '#e25400' : 'white'"
                         [style.color]="(data.personal.name != '' && data.personal.gender != '' && data.personal.country != '' && data.personal.state != '' && data.personal.phone != '') ? 'white' : 'rgb(51, 51, 51)'"
                         mat-stroked-button (click)="submitPersonalDetails();">Next</button>
                 </div>
@@ -75,12 +74,11 @@
     </mat-step>
     <mat-step state="organisationDetails">
         <!-- organisation Details Section -->
-        <mat-card style="display: flex;width: 70%;">
-            <img src="/assets/img/organisation.jpg" style="width:48%" alt="organisationData" />
-            <div class="formFields" style="margin-left: 4rem;">
+        <mat-card>
+            <div class="formFields">
                 <form>
                     <span>
-                        <mat-icon [style.color]="org_icon_upload.value != '' ? 'green' : '#999'"
+                        <mat-icon [style.color]="org_icon_upload.value != '' ? '#e25400' : '#999'"
                             (click)="org_icon_upload.click()"
                             style="cursor:pointer;font-size: 2.2em;color: #e0e0e0; padding: 5px;border-radius: 20px;">
                             add_photo_alternate</mat-icon>
@@ -137,7 +135,7 @@
                 <div>
                     <button mat-button mat-stroked-button style="width: 28%;" matStepperPrevious>Back</button>
                     <button style="width: 68%;margin-left: 2%;"
-                        [style.background]='!(data.company.name == "" || data.company.email == "" || data.company.experience == "" || data.company.jobTitle == "" || data.company.orgLogo == "" || !data.company.isAcceptedTerms) ? "green" : "white"'
+                        [style.background]='!(data.company.name == "" || data.company.email == "" || data.company.experience == "" || data.company.jobTitle == "" || data.company.orgLogo == "" || !data.company.isAcceptedTerms) ? "#e25400" : "white"'
                         [style.color]='!(data.company.name == "" || data.company.email == "" || data.company.experience == "" || data.company.jobTitle == "" || data.company.orgLogo == "" || !data.company.isAcceptedTerms) ? "white" : "rgb(51, 51, 51)"'
                         mat-stroked-button (click)="submitOriganisationDetails()">Send OTP</button>
                 </div>
@@ -147,9 +145,8 @@
     <mat-step state="Verfication">
         <!-- Verification Section -->
         <ng-template matStepLabel>Email Verfications</ng-template>
-        <mat-card style="display: flex;width: 70%;">
-            <img src="/assets/img/verification.jpg" style="width:48%" alt="verificationSection" />
-            <div style="margin-left: 4rem;">
+        <mat-card>
+            <div>
                 <form>
                     <ng-otp-input (onInputChange)="onOtpChange($event)" [config]="{length:4}"></ng-otp-input>
                     <p class="timerCount">

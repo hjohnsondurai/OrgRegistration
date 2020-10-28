@@ -1,12 +1,42 @@
-.stepperContainer{
-    mat-card{
-        margin: auto;
-    }
-    .timerCount{
-        padding: 2rem;
+::ng-deep{
+    .stepperContainer{
+        mat-card{
+            margin: auto;
+            margin-top: 2rem;
+            width: 20rem;
+        }
+        .timerCount{
+            padding: 2rem;
+            
+            mat-icon{
+                font-size: 2rem;
+            }
+        }
+        .mat-horizontal-stepper-header-container{
+            background: #202069;
+            height: 35px;
+            color: white;
         
-        mat-icon{
-            font-size: 2rem;
+            .mat-step-icon.mat-step-icon-state-number.mat-step-icon-selected{
+                background: #f44336;
+                color: white
+            }
+            .mat-step-icon-state-number{
+                background: #383897;
+                color: rgb(211, 211, 211);
+            }
+            .mat-step-text-label{
+                color:white;
+            }
+            .mat-stepper-horizontal-line{
+                background: white;
+            }
+        }
+        mat-step-header{
+            height: 100%;
+        }
+        mat-card mat-radio-group mat-radio-button{
+            padding-left: 1rem;
         }
     }
 }
