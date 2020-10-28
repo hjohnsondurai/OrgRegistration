@@ -14,8 +14,8 @@ let self;
 })
 export class RegistrationComponent implements OnInit {
   countriesList = [];
-  selCountry = [];
-  // isOptional = false;
+  countryCodesByName = {};
+  countriesByName = {};
   stepSelIndex = 0;
   enteredOTP = "";
   genOTP = {
@@ -35,12 +35,14 @@ export class RegistrationComponent implements OnInit {
       }, 1000);
     }
   }
+
   data = {
     personal: {
       name: "",
       gender: '',
-      country: '',
+      country: {country: "India"},
       state: '',
+      countryCode: "+91",
       phone: ''
     },
     company: {
@@ -52,14 +54,17 @@ export class RegistrationComponent implements OnInit {
       isAcceptedTerms: false
     }
   }
+
   stepper = {
     step1Success: false,
     step2Success: false,
     step3Success: false
   };
+
   constructor(private http: HttpClient, private snackBar: MatSnackBar, private ds: DataService, private router: Router) {
-    this.getStatesByCountries();
     self = this;
+    this.getStatesByCountries();
+    this.getCountryCodes();
   }
 
   ngOnInit(): void {
@@ -68,10 +73,38 @@ export class RegistrationComponent implements OnInit {
   getStatesByCountries() {
     this.http.get("assets/data/statesByCountries.json").subscribe((data) => {
       this.countriesList = data["countries"];
+      for(let i in this.countriesList){
+        let country = this.countriesList[i];
+        this.countriesByName[country.country] = country;
+      }
     }, (err) => {
       console.log(err)
     });
   }
+
+  getCountryCodes() {
+    this.http.get("assets/data/countryCodes.json").subscribe((data) => {
+      let codes = (typeof data == "string") ? JSON.parse(data) : data;
+      for(let i in codes){
+        let code = codes[i];
+        if(code.name.split(",").length > 0){
+          let names = code.name.split(",");
+          for(let i in names){
+            let name = names[i];
+            this.countryCodesByName[name] = code.dial_code;
+          }
+        }
+        else{
+          this.countryCodesByName[code.name] = code.dial_code;
+        }
+      }
+      this.data.personal.country = this.countriesByName["India"];
+      this.updateCountryCode();
+    }, (err) => {
+      console.log(err)
+    });
+  }
+
   generateOTP() {
     var digits = '0123456789';
     var otpLength = 4;
@@ -119,11 +152,6 @@ export class RegistrationComponent implements OnInit {
     });
   }
 
-  // Binded functions
-  updateCountry(country) {
-    this.selCountry = country;
-  }
-
   uploadOrgLogo(event) {
     var file = event.target.files[0],
       imageType = /image.*/;
@@ -142,10 +170,14 @@ export class RegistrationComponent implements OnInit {
     }
   }
 
+  updateCountryCode(){
+    let code = this.countryCodesByName[this.data.personal.country?.country] || "";
+    this.data.personal.countryCode = code;
+  }
+
   submitPersonalDetails() {
-    console.log(this.data);
     var personal = this.data.personal;
-    if (personal.name == "" || personal.gender == "" || personal.country == "" || personal.state == "" || personal.phone == "") {
+    if (!this.isValidPersonaldetails()){
       this.showMessage("Please fill the required fields");
       this.stepSelIndex = 0;
     }
@@ -158,7 +190,7 @@ export class RegistrationComponent implements OnInit {
   submitOriganisationDetails() {
     this.genOTP.timerCount = 60;
     var company = this.data.company;
-    if (company.name == "" || company.email == "" || company.experience == "" || company.jobTitle == "" || company.orgLogo == "" || !company.isAcceptedTerms) {
+    if (!this.isValidCompanyDetails()) {
       this.showMessage("Please fill the required fields");
       this.stepSelIndex = 1;
     }
@@ -181,6 +213,14 @@ export class RegistrationComponent implements OnInit {
       this.ds.obj.saveData("Organization", this.data);
       this.router.navigateByUrl("/success");
     }
+  }
+
+  isValidPersonaldetails():boolean{
+    return (this.data.personal.name != '' && this.data.personal.gender != '' && this.data.personal.country != null && this.data.personal.state != '' && this.data.personal.phone != '' && this.data.personal.phone.length == 10);
+  }
+
+  isValidCompanyDetails():boolean{
+    return (this.data.company.name != "" && this.data.company.email != "" && this.data.company.experience != "" && this.data.company.jobTitle != "" && this.data.company.orgLogo != "" && this.data.company.isAcceptedTerms);
   }
 
 }

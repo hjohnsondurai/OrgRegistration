@@ -26,8 +26,7 @@
                     <div *ngIf="countriesList.length > 0">
                         <mat-form-field appearance="outline" style="width: 20rem;">
                             <mat-label>Country</mat-label>
-                            <mat-select #countrySelect (selectionChange)="updateCountry(countrySelect.value)"
-                                name="country" [(ngModel)]="data.personal.country" required>
+                            <mat-select #countrySelect name="country" [(ngModel)]="data.personal.country" required (selectionChange)="updateCountryCode()">
                                 <mat-option *ngFor="let country of countriesList" [value]="country">
                                     {{country.country}}
                                 </mat-option>
@@ -40,9 +39,9 @@
                     <div>
                         <mat-form-field appearance="outline" style="width: 20rem;">
                             <mat-label>State</mat-label>
-                            <mat-select [attr.disabled]="selCountry.length > 0 ? false : true" name="state"
+                            <mat-select [attr.disabled]="data.personal.country.length > 0 ? false : true" name="state"
                                 [(ngModel)]="data.personal.state" required>
-                                <mat-option *ngFor="let state of selCountry.states" [value]="state">
+                                <mat-option *ngFor="let state of data.personal.country.states" [value]="state">
                                     {{state}}
                                 </mat-option>
                             </mat-select>
@@ -55,7 +54,7 @@
                         <mat-form-field appearance="outline" style="width: 20rem;"
                             (change)="stepper.step1Success = false">
                             <mat-label>Phone</mat-label>
-                            <span matPrefix>+91 &nbsp;</span>
+                            <span matPrefix>{{data.personal.countryCode}} &nbsp;</span>
                             <input maxlength="10" type="tel" matInput placeholder="555-555-1234" name="phone"
                                 [(ngModel)]="data.personal.phone" required>
                             <mat-icon matSuffix>phone</mat-icon>
@@ -65,8 +64,8 @@
                 </form>
                 <div>
                     <button style="width: 100%;"
-                        [style.background]="(data.personal.name != '' && data.personal.gender != '' && data.personal.country != '' && data.personal.state != '' && data.personal.phone != '') ? '#e25400' : 'white'"
-                        [style.color]="(data.personal.name != '' && data.personal.gender != '' && data.personal.country != '' && data.personal.state != '' && data.personal.phone != '') ? 'white' : 'rgb(51, 51, 51)'"
+                        [style.background]=" isValidPersonaldetails() ? '#e25400' : 'white'"
+                        [style.color]="isValidPersonaldetails() ? 'white' : 'rgb(51, 51, 51)'"
                         mat-stroked-button (click)="submitPersonalDetails();">Next</button>
                 </div>
             </div>
@@ -78,7 +77,7 @@
             <div class="formFields">
                 <form>
                     <span>
-                        <mat-icon [style.color]="org_icon_upload.value != '' ? '#e25400' : '#999'"
+                        <mat-icon [style.color]="org_icon_upload.   value != '' ? '#e25400' : '#999'"
                             (click)="org_icon_upload.click()"
                             style="cursor:pointer;font-size: 2.2em;color: #e0e0e0; padding: 5px;border-radius: 20px;">
                             add_photo_alternate</mat-icon>
@@ -135,8 +134,8 @@
                 <div>
                     <button mat-button mat-stroked-button style="width: 28%;" matStepperPrevious>Back</button>
                     <button style="width: 68%;margin-left: 2%;"
-                        [style.background]='!(data.company.name == "" || data.company.email == "" || data.company.experience == "" || data.company.jobTitle == "" || data.company.orgLogo == "" || !data.company.isAcceptedTerms) ? "#e25400" : "white"'
-                        [style.color]='!(data.company.name == "" || data.company.email == "" || data.company.experience == "" || data.company.jobTitle == "" || data.company.orgLogo == "" || !data.company.isAcceptedTerms) ? "white" : "rgb(51, 51, 51)"'
+                        [style.background]='isValidCompanyDetails() ? "#e25400" : "white"'
+                        [style.color]='isValidCompanyDetails() ? "white" : "rgb(51, 51, 51)"'
                         mat-stroked-button (click)="submitOriganisationDetails()">Send OTP</button>
                 </div>
             </div>
