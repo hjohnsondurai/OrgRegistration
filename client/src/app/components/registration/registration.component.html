@@ -2,10 +2,14 @@
     <mat-step state="personalDetails" [stepControl]="firstFormGroup" editable="true">
         <!-- Personal Details Section -->
         <mat-card>
+            <mat-card-header>
+                <mat-card-title>Add your personal details</mat-card-title>
+                <mat-card-subtitle>Enter your personal details in below required fields</mat-card-subtitle>
+            </mat-card-header>
             <div class="formFields">
                 <form [formGroup]="firstFormGroup">
                     <ng-template matStepLabel>Personal Details</ng-template>
-                    <mat-form-field appearance="outline" style="width: 20rem;" (change)="stepper.step1Success = true">
+                    <mat-form-field appearance="outline"  (change)="stepper.step1Success = true">
                         <mat-label>Full Name</mat-label>
                         <input width="20rem" formControlName="firstCtrl" matInput placeholder="Placeholder" name="name"
                             [(ngModel)]="data.personal.name" required>
@@ -21,7 +25,7 @@
                             </mat-radio-button>
                         </mat-radio-group>
                     </div>
-                    <mat-form-field *ngIf="countriesList.length > 0" appearance="outline" style="width: 20rem;">
+                    <mat-form-field *ngIf="countriesList.length > 0" appearance="outline" >
                         <mat-label>Country</mat-label>
                         <mat-select formControlName="thirdCtrl" #countrySelect name="country"
                             [(ngModel)]="data.personal.country" required (selectionChange)="updateCountryCode()">
@@ -31,7 +35,7 @@
                         </mat-select>
                         <mat-error>Please select the Country.</mat-error>
                     </mat-form-field>
-                    <mat-form-field appearance="outline" style="width: 20rem;">
+                    <mat-form-field appearance="outline" >
                         <mat-label>State</mat-label>
                         <mat-select formControlName="fourthCtrl"
                             [(ngModel)]="data.personal.state" required>
@@ -41,7 +45,7 @@
                         </mat-select>
                         <mat-error>Please select the State.</mat-error>
                     </mat-form-field>
-                    <mat-form-field appearance="outline" style="width: 20rem;" (change)="stepper.step1Success = false">
+                    <mat-form-field appearance="outline"  (change)="stepper.step1Success = false">
                         <mat-label>Phone</mat-label>
                         <span matPrefix>{{data.personal.countryCode}} &nbsp;</span>
                         <input formControlName="fifthCtrl" maxlength="10" type="tel" matInput placeholder="555-555-1234"
@@ -61,6 +65,10 @@
     <mat-step state="organisationDetails" [stepControl]="secondFormGroup" editable="true">
         <!-- organisation Details Section -->
         <mat-card>
+            <mat-card-header>
+                <mat-card-title>Add your company details</mat-card-title>
+                <mat-card-subtitle>Enter your company details in below required fields</mat-card-subtitle>
+            </mat-card-header>
             <div class="formFields">
                 <form [formGroup]="secondFormGroup">
                     <div>
@@ -74,14 +82,14 @@
                         <img class="logoThumb" *ngIf="orgLogoInput.value != ''" [src]="data.company.orgLogo" />
                     </div>
                     <ng-template matStepLabel>Organisation Details</ng-template>
-                    <mat-form-field appearance="outline" style="width: 20rem;" (change)="stepper.step2Success = true">
+                    <mat-form-field appearance="outline"  (change)="stepper.step2Success = true">
                         <mat-label>Company Name</mat-label>
                         <input formControlName="secondtCtrl" width="20rem" required matInput placeholder="Placeholder"
                             name="name" [(ngModel)]="data.company.name">
                         <mat-icon matSuffix>work</mat-icon>
                         <mat-error>Company name is required.</mat-error>
                     </mat-form-field>
-                    <mat-form-field appearance="outline" style="width: 20rem;">
+                    <mat-form-field appearance="outline" >
                         <mat-label>Email</mat-label>
                         <input formControlName="thirdCtrl" type="email" required
                             pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$" width="20rem" matInput
@@ -91,14 +99,14 @@
                             Please check you have entered a valid email address
                         </mat-error>
                     </mat-form-field>
-                    <mat-form-field appearance="outline" style="width: 20rem;">
+                    <mat-form-field appearance="outline" >
                         <mat-label>Job Title</mat-label>
                         <input formControlName="fourthCtrl" required width="20rem" matInput placeholder="Placeholder"
                             name="jobTitle" [(ngModel)]="data.company.jobTitle">
                         <mat-icon matSuffix>edit</mat-icon>
                         <mat-error>Job Title is required.</mat-error>
                     </mat-form-field>
-                    <mat-form-field appearance="outline" style="width: 20rem;">
+                    <mat-form-field appearance="outline" >
                         <mat-label>Years of Experience</mat-label>
                         <input formControlName="fifthCtrl" type="text" required width="20rem" matInput
                             placeholder="Placeholder" name="yearsOfExperience" [(ngModel)]="data.company.experience">
@@ -124,6 +132,10 @@
         <!-- Verification Section -->
         <ng-template matStepLabel>Email Verfications</ng-template>
         <mat-card>
+            <mat-card-header>
+                <mat-card-title>Enter OTP</mat-card-title>
+                <mat-card-subtitle>For your security, we need to verify your identity. We sent 4 digit code to <b>{{data.company.email}}</b>. Please check it below.</mat-card-subtitle>
+            </mat-card-header>
             <div>
                 <form>
                     <ng-otp-input (onInputChange)="onOtpChange($event)" [config]="{length:4}"></ng-otp-input>

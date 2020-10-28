@@ -2,11 +2,32 @@
     .stepperContainer{
         mat-card{
             margin: auto;
-            margin-top: 2rem;
-            width: 20rem;
+            margin-top: 1rem;
+            width: 23rem;
+            box-shadow: unset !important;
             
             .mat-form-field-prefix{
                 top: 0px;
+            }
+            .mat-card-header-text{
+                color: #202069;
+                text-align: center;
+                width: 100%;
+            }
+            .mat-card-title, .mat-card-subtitle{
+                width: 100%;
+            }
+            .mat-card-subtitle{
+                font-size: 12px;
+            }
+            .mat-form-field{
+                width: 100%;
+            }
+            ng-otp-input, mat-card-header{
+                text-align: center;
+            }
+            mat-card-header{
+                margin-bottom: 0.5rem;
             }
         }
         .timerCount{
