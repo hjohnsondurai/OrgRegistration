@@ -1,7 +1,47 @@
-<h1>Registration OTP</h1>
-<p>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"> <!-- utf-8 works for most cases -->
+		<meta name="viewport" content="width=device-width"> <!-- Forcing initial-scale shouldn't be necessary -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Use the latest (edge) version of IE rendering engine -->
+		<meta name="x-apple-disable-message-reformatting">  <!-- Disable auto-scale in iOS 10 Mail entirely -->
+		<title>Verify Your email</title> <!-- The title tag shows in email notifications, like Android 4.4. -->
+	</head>
 
-Dear {{username}},
+	<body width="100%">
+		<style>
+			@media (max-width: 768px) {
+				.card {
+					margin: 10px 20px;
+					width: calc(100% - 40px);
+				}
 
-Your E-mail OTP for registration in our blog is {{otp}}.
-</p> 
+					.card:first-child {
+						margin-top: 20px;
+					}
+			}
+
+			@media (max-width: 768px) {
+				.card:nth-child(2) {
+					margin: 10px 20px;
+					width: calc(100% - 40px);
+				}
+			}
+		</style>
+
+		<div class="card" style="box-sizing: border-box; background: #1F2124; box-shadow: 0 0 20px rgba(0, 0, 0, 0.4); border-radius: 5px; margin: 50px 20px 20px 20px; width: 100%; padding: 20px; text-align: center; color: white; float: left;">
+
+			<div class="title" style="box-sizing: border-box; font-size: 22px;">Organization Registration OTP</div>
+
+			<div class="features" style="box-sizing: border-box;">
+				<h4>Hi {{username}}</h4>
+				<p style="box-sizing: border-box;">Your registration form OTP is here..!</p>
+			</div>
+			<!--/features-->
+
+			<a class="btn" style="font-size: 2rem;letter-spacing: 30px;box-sizing: border-box; display: block; background: #F6B352; color: white; padding: 15px 20px; margin: 20px 0; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.9); transition: all 200ms ease-in-out; text-decoration: none;">{{otp}}</a>
+  
+		</div>
+		<!--/card-->
+	</body>
+</html>
